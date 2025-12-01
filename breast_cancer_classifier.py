@@ -1,5 +1,7 @@
 import csv
 import numpy as np
+import os
+os.environ["KERAS_BACKEND"] = "jax"
 import keras
 
 class BreastCancerClassifier:
@@ -23,8 +25,8 @@ class BreastCancerClassifier:
 
             for i, row in enumerate(reader):
                 features_row = [float(val) for val in row[:-1]]
-                all_features.append([features_row])
-                all_targets.appned([int(float(row[-1]))])
+                all_features.append(features_row)
+                all_targets.append([int(float(row[-1]))])
 
         features = np.array(all_features, dtype="float32")
         targets = np.array(all_targets, dtype="uint8")
@@ -36,8 +38,8 @@ class BreastCancerClassifier:
 
         train_features = features[:-num_val_samples]
         train_targets = targets[:-num_val_samples]
-        val_features = features[-num_val_samples]
-        val_targets = targets[-num_val_samples]
+        val_features = features[-num_val_samples:]
+        val_targets = targets[-num_val_samples:]
 
         return train_features, train_targets, val_features, val_targets
 
